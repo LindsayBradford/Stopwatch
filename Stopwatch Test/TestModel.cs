@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
-using Stowpatch.Model;
+using Stopwatch.Model;
 
 namespace Stopwatch.Model.Test
 {
@@ -116,13 +116,13 @@ namespace Stopwatch.Model.Test
 
     public class TestDefaultTimer
     {
-        private DefaultTimer _timerUnderTest;
+        private DefaultModel _timerUnderTest;
         private MockTicker _mockTicker;
 
         [SetUp]
         public void Setup()
         {
-            _timerUnderTest = new DefaultTimer();
+            _timerUnderTest = new DefaultModel();
             _mockTicker = new MockTicker(_timerUnderTest);
         }
 

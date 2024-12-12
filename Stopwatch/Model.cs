@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Threading;
-using Stowpatch.Model;
 
-namespace Stowpatch.Model
+namespace Stopwatch.Model
 {
+
     public interface TickRecipient
     {
         bool ReceivingTicks { get; set; }
         void Tick();
     }
 
-    public interface Timer
+    public interface Model
     {
         void Start();
         void Stop();
         void Reset();
+        void Tick();
         TimeSpan ElapsedTime { get; }
     }
 
@@ -31,7 +32,7 @@ namespace Stowpatch.Model
 
     }
 
-    public class DefaultTimer : Timer, TickRecipient
+    public class DefaultModel : Model, TickRecipient
     {
         private ElapsedTime _elapsed = new ElapsedTime();
 

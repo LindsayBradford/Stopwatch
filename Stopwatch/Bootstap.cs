@@ -1,12 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using Stopwatch.Model;
+using Stopwatch.Presenter;
 using Stopwatch.View;
 
 namespace Stopwatch
 {
+
+    public enum Event
+    {
+        Start,
+        Stop,
+        Tick,
+        Reset
+    }
     internal static class Bootstap
     {
         /// <summary>
@@ -17,7 +25,20 @@ namespace Stopwatch
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WInFormsView());
+
+            Presenter.IPresenter presenter = buildApplication();
+
+            Application.Run((Form) presenter.View);
+        }
+
+        static private Presenter.IPresenter buildApplication()
+        {
+            Presenter.IPresenter presenter = new WInformsPresenter();
+
+            presenter.Model = new DefaultModel();
+            presenter.View = new WInFormsView();
+
+            return presenter;
         }
     }
 }

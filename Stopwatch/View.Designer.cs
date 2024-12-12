@@ -1,6 +1,7 @@
 ﻿namespace Stopwatch.View
 {
-    partial class WInFormsView
+
+    partial class WInFormsView : IView
     {
         /// <summary>
         /// Required designer variable.
@@ -36,10 +37,10 @@
             this.ElapsedTimeGroupbox = new System.Windows.Forms.GroupBox();
             this.ElapsedTimeLabel = new System.Windows.Forms.Label();
             this.MessageLabel = new System.Windows.Forms.Label();
-            this.MessageBox = new System.Windows.Forms.GroupBox();
+            this.MessageBorder = new System.Windows.Forms.GroupBox();
             this.RunStateGroupBox.SuspendLayout();
             this.ElapsedTimeGroupbox.SuspendLayout();
-            this.MessageBox.SuspendLayout();
+            this.MessageBorder.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartStopButton
@@ -48,8 +49,9 @@
             this.StartStopButton.Name = "StartStopButton";
             this.StartStopButton.Size = new System.Drawing.Size(82, 36);
             this.StartStopButton.TabIndex = 0;
-            this.StartStopButton.Text = "Start";
+            this.StartStopButton.Text = "&Start";
             this.StartStopButton.UseVisualStyleBackColor = true;
+            this.StartStopButton.Click += new System.EventHandler(this.StartStopButtonPressed);
             // 
             // ResetButton
             // 
@@ -57,8 +59,10 @@
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(89, 36);
             this.ResetButton.TabIndex = 1;
-            this.ResetButton.Text = "Restart";
+            this.ResetButton.Text = "&Restart";
             this.ResetButton.UseVisualStyleBackColor = true;
+            this.ResetButton.Click += new System.EventHandler(this.ResetButtonPressed);
+
             // 
             // RunningRadioButton
             // 
@@ -117,21 +121,22 @@
             this.MessageLabel.TabIndex = 6;
             this.MessageLabel.Text = "Message Here";
             // 
-            // MessageBox
+            // MessageBorder
             // 
-            this.MessageBox.Controls.Add(this.MessageLabel);
-            this.MessageBox.ForeColor = System.Drawing.Color.Black;
-            this.MessageBox.Location = new System.Drawing.Point(4, 119);
-            this.MessageBox.Name = "MessageBox";
-            this.MessageBox.Size = new System.Drawing.Size(287, 32);
-            this.MessageBox.TabIndex = 7;
-            this.MessageBox.TabStop = false;
+            this.MessageBorder.Controls.Add(this.MessageLabel);
+            this.MessageBorder.Enabled = false;
+            this.MessageBorder.ForeColor = System.Drawing.Color.Black;
+            this.MessageBorder.Location = new System.Drawing.Point(4, 119);
+            this.MessageBorder.Name = "MessageBorder";
+            this.MessageBorder.Size = new System.Drawing.Size(287, 32);
+            this.MessageBorder.TabIndex = 7;
+            this.MessageBorder.TabStop = false;
             // 
             // WInFormsView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(290, 153);
-            this.Controls.Add(this.MessageBox);
+            this.Controls.Add(this.MessageBorder);
             this.Controls.Add(this.ElapsedTimeGroupbox);
             this.Controls.Add(this.RunStateGroupBox);
             this.Controls.Add(this.ResetButton);
@@ -145,7 +150,7 @@
             this.RunStateGroupBox.ResumeLayout(false);
             this.RunStateGroupBox.PerformLayout();
             this.ElapsedTimeGroupbox.ResumeLayout(false);
-            this.MessageBox.ResumeLayout(false);
+            this.MessageBorder.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -160,7 +165,8 @@
         private System.Windows.Forms.GroupBox ElapsedTimeGroupbox;
         private System.Windows.Forms.Label ElapsedTimeLabel;
         private System.Windows.Forms.Label MessageLabel;
-        private System.Windows.Forms.GroupBox MessageBox;
+        private System.Windows.Forms.GroupBox MessageBorder;
+
     }
 }
 
