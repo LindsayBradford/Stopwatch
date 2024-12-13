@@ -8,13 +8,7 @@ using Stopwatch.View;
 namespace Stopwatch
 {
 
-    public enum Event
-    {
-        Start,
-        Stop,
-        Tick,
-        Reset
-    }
+
     internal static class Bootstap
     {
         /// <summary>
@@ -26,19 +20,17 @@ namespace Stopwatch
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Presenter.IPresenter presenter = buildApplication();
-
-            Application.Run((Form) presenter.View);
+            Application.Run(buildApplication());
         }
 
-        static private Presenter.IPresenter buildApplication()
+        static private Form buildApplication()
         {
-            Presenter.IPresenter presenter = new WInformsPresenter();
+            Model.Model model = ModelFactory.BuildDefaultModelWithThreadTicker();
+            IView view = new WInFormsView();
 
-            presenter.Model = new DefaultModel();
-            presenter.View = new WInFormsView();
+            new WInformsPresenter().ForView(view).ForModel(model);
 
-            return presenter;
+            return (Form) view;
         }
     }
 }

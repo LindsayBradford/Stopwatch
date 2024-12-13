@@ -4,13 +4,20 @@ using System.Windows.Forms;
 
 namespace Stopwatch.View
 {
+    public enum ViewEvent
+    {
+        Start,
+        Stop,
+        Reset,
+        Closing
+    }
     public interface IView
     {
         string Message { get; set; }
         TimeSpan ElapsedTime { get; set; }
 
-        public event EventHandler<Event> EventHandler;
-        void RaiseEvent(Event stopwatchEvent);
+        public event EventHandler<ViewEvent> EventHandler;
+        void RaiseEvent(ViewEvent stopwatchEvent);
     }
 
     public partial class WInFormsView : Form, IView
@@ -18,7 +25,10 @@ namespace Stopwatch.View
         public WInFormsView()
         {
             InitializeComponent();
-            disableResizing();
+            DisableResizing();
+            StartStopButton.Text = "&Start";
+            RunningRadioButton.Checked = false;
+            StoppedRadioButton.Checked = true;
         }
 
         public string Message { 
@@ -26,18 +36,38 @@ namespace Stopwatch.View
             set { this.MessageLabel.Text = value; }
         }
 
-        public TimeSpan ElapsedTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private TimeSpan elapsedTime;
+        public TimeSpan ElapsedTime { 
+            get { return elapsedTime;  }
+            set { 
+                this.elapsedTime = value;
+                UpdateElapsedTimeText();
+            }
+        }
 
-        public event EventHandler<Event> EventHandler = delegate { };
-
-        public void RaiseEvent(Event stopwatchEvent)
+        private void UpdateElapsedTimeText()
         {
-            EventHandler(this, stopwatchEvent);
+            this.ElapsedTimeLabel.Text = formatElapsedTime();
+            this.ElapsedTimeLabel.Refresh();
+        }
+
+        private string formatElapsedTime()
+        {
+            string timeAsText = elapsedTime.ToString("hh\\:mm\\:ss\\.fff");
+            return timeAsText;
+        }
+
+        public event EventHandler<ViewEvent> EventHandler = delegate { };
+
+        public void RaiseEvent(ViewEvent viewEvent)
+        {
+            EventHandler(this, viewEvent);
         }
 
         public void ResetButtonPressed(object sender, EventArgs e)
         {
-            this.RaiseEvent(Event.Reset);
+            this.RaiseEvent(ViewEvent.Reset);
+            RenderStoppedState();
         }
 
         public void StartStopButtonPressed(object sender, EventArgs e)
@@ -45,19 +75,38 @@ namespace Stopwatch.View
             string currentText = StartStopButton.Text;
             if (currentText.Contains("Start"))
             {
-                this.RaiseEvent(Event.Start);
-                StartStopButton.Text = "&Stop";
+                this.RaiseEvent(ViewEvent.Start);
+                RenderRunningState();
             }
             else
             {
-                this.RaiseEvent(Event.Stop);
-                StartStopButton.Text = "&Start";
+                this.RaiseEvent(ViewEvent.Stop);
+                RenderStoppedState();
             }
         }
 
-        private void disableResizing()
+        private void RenderRunningState()
+        {
+            StartStopButton.Text = "&Stop";
+            RunningRadioButton.Checked = true;
+            StoppedRadioButton.Checked = false;
+        }
+
+        private void RenderStoppedState()
+        {
+            StartStopButton.Text = "&Start";
+            RunningRadioButton.Checked = false;
+            StoppedRadioButton.Checked = true;
+        }
+
+        private void DisableResizing()
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
+        }
+
+        public void WinFormsView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RaiseEvent(ViewEvent.Closing);
         }
     }
 }
