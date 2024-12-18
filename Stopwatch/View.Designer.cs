@@ -36,18 +36,18 @@ namespace Stopwatch.View
             this.RunningRadioButton = new System.Windows.Forms.RadioButton();
             this.StoppedRadioButton = new System.Windows.Forms.RadioButton();
             this.RunStateGroupBox = new System.Windows.Forms.GroupBox();
-            this.ElapsedTimeGroupbox = new System.Windows.Forms.GroupBox();
-            this.ElapsedTimeLabel = new System.Windows.Forms.Label();
             this.MessageLabel = new System.Windows.Forms.Label();
             this.MessageBorder = new System.Windows.Forms.GroupBox();
+            this.ElapsedTimeLabel = new System.Windows.Forms.RichTextBox();
+            this.ElapsedTimeGroupbox = new System.Windows.Forms.GroupBox();
             this.RunStateGroupBox.SuspendLayout();
-            this.ElapsedTimeGroupbox.SuspendLayout();
             this.MessageBorder.SuspendLayout();
+            this.ElapsedTimeGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartStopButton
             // 
-            this.StartStopButton.Location = new System.Drawing.Point(104, 77);
+            this.StartStopButton.Location = new System.Drawing.Point(70, 77);
             this.StartStopButton.Name = "StartStopButton";
             this.StartStopButton.Size = new System.Drawing.Size(82, 36);
             this.StartStopButton.TabIndex = 0;
@@ -57,7 +57,7 @@ namespace Stopwatch.View
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(209, 77);
+            this.ResetButton.Location = new System.Drawing.Point(200, 77);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(89, 36);
             this.ResetButton.TabIndex = 1;
@@ -94,32 +94,11 @@ namespace Stopwatch.View
             this.RunStateGroupBox.TabIndex = 4;
             this.RunStateGroupBox.TabStop = false;
             // 
-            // ElapsedTimeGroupbox
-            // 
-            this.ElapsedTimeGroupbox.Controls.Add(this.ElapsedTimeLabel);
-            this.ElapsedTimeGroupbox.ForeColor = System.Drawing.Color.Black;
-            this.ElapsedTimeGroupbox.Location = new System.Drawing.Point(46, 11);
-            this.ElapsedTimeGroupbox.Name = "ElapsedTimeGroupbox";
-            this.ElapsedTimeGroupbox.Size = new System.Drawing.Size(302, 60);
-            this.ElapsedTimeGroupbox.TabIndex = 5;
-            this.ElapsedTimeGroupbox.TabStop = false;
-            // 
-            // ElapsedTimeLabel
-            // 
-            this.ElapsedTimeLabel.BackColor = System.Drawing.Color.White;
-            this.ElapsedTimeLabel.CausesValidation = false;
-            this.ElapsedTimeLabel.Font = new System.Drawing.Font("Courier New", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ElapsedTimeLabel.Location = new System.Drawing.Point(9, 15);
-            this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
-            this.ElapsedTimeLabel.Size = new System.Drawing.Size(284, 37);
-            this.ElapsedTimeLabel.TabIndex = 0;
-            this.ElapsedTimeLabel.Text = "00:00:00.000";
-            // 
             // MessageLabel
             // 
             this.MessageLabel.Location = new System.Drawing.Point(10, 11);
             this.MessageLabel.Name = "MessageLabel";
-            this.MessageLabel.Size = new System.Drawing.Size(337, 19);
+            this.MessageLabel.Size = new System.Drawing.Size(295, 19);
             this.MessageLabel.TabIndex = 6;
             this.MessageLabel.Text = "Message Here";
             // 
@@ -129,14 +108,36 @@ namespace Stopwatch.View
             this.MessageBorder.ForeColor = System.Drawing.Color.Black;
             this.MessageBorder.Location = new System.Drawing.Point(4, 120);
             this.MessageBorder.Name = "MessageBorder";
-            this.MessageBorder.Size = new System.Drawing.Size(353, 32);
+            this.MessageBorder.Size = new System.Drawing.Size(312, 32);
             this.MessageBorder.TabIndex = 7;
             this.MessageBorder.TabStop = false;
+            // 
+            // ElapsedTimeLabel
+            // 
+            this.ElapsedTimeLabel.Font = new System.Drawing.Font("Century", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ElapsedTimeLabel.Location = new System.Drawing.Point(7, 8);
+            this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
+            this.ElapsedTimeLabel.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.ElapsedTimeLabel.Size = new System.Drawing.Size(256, 46);
+            this.ElapsedTimeLabel.TabIndex = 0;
+            this.ElapsedTimeLabel.SelectionAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ElapsedTimeLabel.Rtf = @"{\rtf1\ansi{00:00:00\super.000\nosupersub}}";
+
+            // 
+            // ElapsedTimeGroupbox
+            // 
+            this.ElapsedTimeGroupbox.Controls.Add(this.ElapsedTimeLabel);
+            this.ElapsedTimeGroupbox.ForeColor = System.Drawing.Color.Black;
+            this.ElapsedTimeGroupbox.Location = new System.Drawing.Point(46, 12);
+            this.ElapsedTimeGroupbox.Name = "ElapsedTimeGroupbox";
+            this.ElapsedTimeGroupbox.Size = new System.Drawing.Size(270, 59);
+            this.ElapsedTimeGroupbox.TabIndex = 5;
+            this.ElapsedTimeGroupbox.TabStop = false;
             // 
             // WInFormsView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(363, 153);
+            this.ClientSize = new System.Drawing.Size(327, 153);
             this.Controls.Add(this.MessageBorder);
             this.Controls.Add(this.ElapsedTimeGroupbox);
             this.Controls.Add(this.RunStateGroupBox);
@@ -151,8 +152,8 @@ namespace Stopwatch.View
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WinFormsView_FormClosing);
             this.RunStateGroupBox.ResumeLayout(false);
             this.RunStateGroupBox.PerformLayout();
-            this.ElapsedTimeGroupbox.ResumeLayout(false);
             this.MessageBorder.ResumeLayout(false);
+            this.ElapsedTimeGroupbox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -164,11 +165,10 @@ namespace Stopwatch.View
         private System.Windows.Forms.RadioButton RunningRadioButton;
         private System.Windows.Forms.RadioButton StoppedRadioButton;
         private System.Windows.Forms.GroupBox RunStateGroupBox;
-        private System.Windows.Forms.GroupBox ElapsedTimeGroupbox;
-        private System.Windows.Forms.Label ElapsedTimeLabel;
         private System.Windows.Forms.Label MessageLabel;
         private System.Windows.Forms.GroupBox MessageBorder;
-
+        private System.Windows.Forms.RichTextBox ElapsedTimeLabel;
+        private System.Windows.Forms.GroupBox ElapsedTimeGroupbox;
     }
 }
 

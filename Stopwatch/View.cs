@@ -47,14 +47,16 @@ namespace Stopwatch.View
 
         private void UpdateElapsedTimeText()
         {
-            this.ElapsedTimeLabel.Text = formatElapsedTime();
+            this.ElapsedTimeLabel.Rtf = formatElapsedTime();
             this.ElapsedTimeLabel.Refresh();
         }
 
         private string formatElapsedTime()
         {
-            string timeAsText = elapsedTime.ToString("hh\\:mm\\:ss\\.fff");
-            return timeAsText;
+            string timeAsText = elapsedTime.ToString("hh\\:mm\\:ss");
+            string millisecondsAsText = elapsedTime.ToString("\\.fff");
+            string formattedTimeAsText = @"{\rtf1\ansi{" + timeAsText + @"\super" + millisecondsAsText + @"\nosupersub}}";
+            return formattedTimeAsText;
         }
 
         public event EventHandler<ViewEvent> EventHandler = delegate { };

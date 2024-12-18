@@ -75,7 +75,6 @@ namespace Stopwatch.Model
             this.ReceivingTicks = false;
             _elapsed = new ElapsedTime();
             this.ElapsedTime = TimeSpan.Zero;
-            this.ReceivingTicks = false;
             RaiseEvent(ModelEvent.ElapsedTimeChanged);
         }
 
@@ -104,7 +103,6 @@ namespace Stopwatch.Model
                 RaiseEvent(ModelEvent.ElapsedTimeChanged);
             }
         }
-
         public void Die()
         {
             Stop();
@@ -170,11 +168,6 @@ namespace Stopwatch.Model
             }
         }
 
-        private void Die()
-        {
-            _running = false;
-        }
-
         public void HandleModelEvent(object source, ModelEvent modelEvent)
         {
             switch (modelEvent)
@@ -187,6 +180,11 @@ namespace Stopwatch.Model
                     break;
             }
         }
+        private void Die()
+        {
+            _running = false;
+        }
+
     }
 }
 

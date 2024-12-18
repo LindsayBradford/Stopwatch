@@ -38,12 +38,12 @@ namespace Stopwatch.Presenter
             switch (viewEvent)
             {
                 case ViewEvent.Start:
-                    view.Message = "Stopwatch running...";
                     model.Start();
+                    view.Message = "Stopwatch running...";
                     break;
                 case ViewEvent.Stop:
-                    view.Message = "Stopwatch paused.";
                     model.Stop();
+                    view.Message = "Stopwatch paused.";
                     break;
                 case ViewEvent.Reset:
                     model.Reset();
