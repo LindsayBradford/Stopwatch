@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
-using System.Windows.Forms;
-using Stopwatch.View;
 
 namespace Stopwatch.Model
 {
 
     public class ModelFactory
     {
-        public static Model BuildDefaultModelWithThreadTicker()
+        public static IModel BuildDefaultModelWithThreadTicker()
         {
-            Model model = new DefaultModel();
+            IModel model = new DefaultModel();
             ThreadTicker ticker = new(model);
             model.EventHandler += ticker.HandleModelEvent;
 
@@ -32,7 +28,7 @@ namespace Stopwatch.Model
         void Tick();
     }
 
-    public interface Model: TickRecipient
+    public interface IModel: TickRecipient
     {
         void Start();
         void Stop();
@@ -41,6 +37,25 @@ namespace Stopwatch.Model
         TimeSpan ElapsedTime { get; }
 
         public event EventHandler<ModelEvent> EventHandler;
+    }
+
+    public class NullModel : IModel
+    {
+        public TimeSpan ElapsedTime => TimeSpan.Zero;
+
+        public bool ReceivingTicks { get => false; set; }
+
+        public event EventHandler<ModelEvent> EventHandler;
+
+        public void Die() {}
+
+        public void Reset() {}
+
+        public void Start() {}
+
+        public void Stop() {}
+
+        public void Tick() {}
     }
 
     public class ElapsedTime
@@ -58,7 +73,7 @@ namespace Stopwatch.Model
 
     }
 
-    public class DefaultModel : Model, TickRecipient
+    public class DefaultModel : IModel, TickRecipient
     {
         public event EventHandler<ModelEvent> EventHandler = delegate { };
 

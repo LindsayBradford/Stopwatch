@@ -25,10 +25,10 @@ namespace Stopwatch
 
         static private Form buildApplication()
         {
-            Model.Model model = ModelFactory.BuildDefaultModelWithThreadTicker();
+            Model.IModel model = ModelFactory.BuildDefaultModelWithThreadTicker();
             IView view = new WInFormsView();
 
-            new WInformsPresenter().ForView(view).ForModel(model);
+            new WinformsPresenter().ForView(view).ForModel(model);
 
             return (Form) view;
         }

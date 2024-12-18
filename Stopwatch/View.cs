@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
 namespace Stopwatch.View
@@ -18,6 +18,19 @@ namespace Stopwatch.View
 
         public event EventHandler<ViewEvent> EventHandler;
         void RaiseEvent(ViewEvent stopwatchEvent);
+    }
+
+    public class NullView : IView
+    {
+        public string Message { get ; set; }
+        public TimeSpan ElapsedTime { get => TimeSpan.Zero; set; }
+
+        public event EventHandler<ViewEvent> EventHandler;
+
+        public void RaiseEvent(ViewEvent stopwatchEvent)
+        {
+            // deliberately does nothing.
+        }
     }
 
     public partial class WInFormsView : Form, IView
@@ -53,8 +66,8 @@ namespace Stopwatch.View
 
         private string formatElapsedTime()
         {
-            string timeAsText = elapsedTime.ToString("hh\\:mm\\:ss");
-            string millisecondsAsText = elapsedTime.ToString("\\.fff");
+            string timeAsText = elapsedTime.ToString(@"hh\:mm\:ss");
+            string millisecondsAsText = elapsedTime.ToString(@"\.fff");
             string formattedTimeAsText = @"{\rtf1\ansi{" + timeAsText + @"\super" + millisecondsAsText + @"\nosupersub}}";
             return formattedTimeAsText;
         }
