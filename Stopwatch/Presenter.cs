@@ -7,7 +7,7 @@ namespace Stopwatch.Presenter
 
     public interface IPresenter
     {
-        public IPresenter ForModel(Model.IModel model);
+        public IPresenter ForModel(IModel model);
         public IPresenter ForView(IView view);
 
         void HandleViewEvent(Object source, ViewEvent stopwatchEvent);
@@ -17,7 +17,7 @@ namespace Stopwatch.Presenter
     public class WinformsPresenter : IPresenter
     {
 
-        public IPresenter ForModel(Model.IModel model)
+        public IPresenter ForModel(IModel model)
         {
             model.EventHandler += this.HandleModelEvent;
             this.model = model;
@@ -31,8 +31,9 @@ namespace Stopwatch.Presenter
             return this;
         }
 
-        private Model.IModel model = new NullModel(); 
+        private IModel model = new NullModel(); 
         private IView view = new NullView();
+
        public void HandleViewEvent(Object source,  ViewEvent viewEvent)
         {
             switch (viewEvent)

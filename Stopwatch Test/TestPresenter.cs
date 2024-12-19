@@ -1,12 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using Stopwatch.Presenter;
 using Stopwatch.View;
 using Stopwatch.Model;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
-using System.Security;
+
 
 namespace Stopwatch.Presenter.Test
 {

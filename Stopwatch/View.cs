@@ -20,19 +20,6 @@ namespace Stopwatch.View
         void RaiseEvent(ViewEvent stopwatchEvent);
     }
 
-    public class NullView : IView
-    {
-        public string Message { get ; set; }
-        public TimeSpan ElapsedTime { get => TimeSpan.Zero; set; }
-
-        public event EventHandler<ViewEvent> EventHandler;
-
-        public void RaiseEvent(ViewEvent stopwatchEvent)
-        {
-            // deliberately does nothing.
-        }
-    }
-
     public partial class WInFormsView : Form, IView
     {
         public WInFormsView()
@@ -124,4 +111,18 @@ namespace Stopwatch.View
             RaiseEvent(ViewEvent.Closing);
         }
     }
+
+    public class NullView : IView
+    {
+        public string Message { get; set; }
+        public TimeSpan ElapsedTime { get => TimeSpan.Zero; set; }
+
+        public event EventHandler<ViewEvent> EventHandler;
+
+        public void RaiseEvent(ViewEvent stopwatchEvent)
+        {
+            // deliberately does nothing.
+        }
+    }
+
 }

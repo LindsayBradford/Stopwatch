@@ -1,8 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using Stopwatch.Model;
-
 namespace Stopwatch.Model.Test
 {
 
