@@ -1,6 +1,6 @@
 # Stopwatch
 
-A simple stopwatch utility written in C# using WinFOrms, and the [MVP pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter).
+A simple stopwatch utility written in C# using Winforms, and the [MVP pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter).
 Features start, stop, and reset functionality.
 
 ## This application depends on the following resources (via NuGet):
