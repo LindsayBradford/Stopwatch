@@ -31,20 +31,24 @@ namespace Stopwatch.View
         public WInFormsView()
         {
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            cacheClickSound();
+            InitializeComponent();
+            DisableResizing();
 
+            StartStopButton.Text = "&Start";
+            RunningRadioButton.Checked = false;
+            StoppedRadioButton.Checked = true;
+        }
+
+        private void cacheClickSound()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream("Stopwatch.Resources.stopwatch.wav"))
             using (BinaryReader br = new BinaryReader(stream))
             {
                 clickSoundBytes = br.ReadBytes((int)stream.Length);
             }
-
-            InitializeComponent();
-            DisableResizing();
-            StartStopButton.Text = "&Start";
-            RunningRadioButton.Checked = false;
-            StoppedRadioButton.Checked = true;
-        }
+        }   
 
         private void PlayClickSound()
         {
