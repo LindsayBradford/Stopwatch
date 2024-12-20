@@ -25,22 +25,34 @@ namespace Stopwatch.View
 
     public partial class WInFormsView : Form, IView
     {
-        private readonly SoundPlayer clickSound = new SoundPlayer();
+        private readonly SoundPlayer clickSound = new();
+        private byte[] clickSoundBytes;
 
         public WInFormsView()
         {
 
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            Stream stream = assembly.GetManifestResourceStream("Stopwatch.Resources.stopwatch.wav");
-            clickSound.Stream = stream;
-
+            using (Stream stream = assembly.GetManifestResourceStream("Stopwatch.Resources.stopwatch.wav"))
+            using (BinaryReader br = new BinaryReader(stream))
+            {
+                clickSoundBytes = br.ReadBytes((int)stream.Length);
+            }
 
             InitializeComponent();
             DisableResizing();
             StartStopButton.Text = "&Start";
             RunningRadioButton.Checked = false;
             StoppedRadioButton.Checked = true;
+        }
+
+        private void PlayClickSound()
+        {
+            using (MemoryStream ms = new MemoryStream(clickSoundBytes))
+            {
+                clickSound.Stream = ms;
+                clickSound.Play();
+            }
         }
 
         public string Message { 
@@ -80,14 +92,14 @@ namespace Stopwatch.View
 
         public void ResetButtonPressed(object sender, EventArgs e)
         {
-            clickSound.Play();
+            PlayClickSound();
             this.RaiseEvent(ViewEvent.Reset);
             RenderStoppedState();
         }
 
         public void StartStopButtonPressed(object sender, EventArgs e)
         {
-            clickSound.Play();
+            PlayClickSound();
             string currentText = StartStopButton.Text;
             if (currentText.Contains("Start"))
             {
