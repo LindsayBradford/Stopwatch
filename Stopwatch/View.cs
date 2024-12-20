@@ -1,6 +1,9 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
+using System.IO;
+using System.Media;
+using System.Reflection;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Stopwatch.View
 {
@@ -22,8 +25,17 @@ namespace Stopwatch.View
 
     public partial class WInFormsView : Form, IView
     {
+        private readonly SoundPlayer clickSound = new SoundPlayer();
+
         public WInFormsView()
         {
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            Stream stream = assembly.GetManifestResourceStream("Stopwatch.Resources.stopwatch.wav");
+            clickSound.Stream = stream;
+
+
             InitializeComponent();
             DisableResizing();
             StartStopButton.Text = "&Start";
@@ -68,12 +80,14 @@ namespace Stopwatch.View
 
         public void ResetButtonPressed(object sender, EventArgs e)
         {
+            clickSound.Play();
             this.RaiseEvent(ViewEvent.Reset);
             RenderStoppedState();
         }
 
         public void StartStopButtonPressed(object sender, EventArgs e)
         {
+            clickSound.Play();
             string currentText = StartStopButton.Text;
             if (currentText.Contains("Start"))
             {
