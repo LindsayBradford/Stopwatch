@@ -28,6 +28,8 @@ namespace Stopwatch.View
         private readonly SoundPlayer clickSound = new();
         private byte[] clickSoundBytes;
 
+        private Boolean millisecondsVisible = true;
+
         public WInFormsView()
         {
 
@@ -75,16 +77,37 @@ namespace Stopwatch.View
 
         private void UpdateElapsedTimeText()
         {
-            this.ElapsedTimeLabel.Rtf = formatElapsedTime();
-            this.ElapsedTimeLabel.Refresh();
+            try
+            {
+                if (ElapsedTimeLabel.InvokeRequired)
+                {
+                    ElapsedTimeLabel.Invoke(new Action(UpdateElapsedTimeText));
+                }
+                else
+                {
+                    ElapsedTimeLabel.Rtf = formatElapsedTime();
+                    ElapsedTimeLabel.SelectionAlignment = HorizontalAlignment.Center;
+                    ElapsedTimeLabel.Refresh();
+                }
+            } catch (Exception e)
+            {
+                // Don't care to refresh if form is dieing.
+            } 
         }
 
         private string formatElapsedTime()
         {
             string timeAsText = elapsedTime.ToString(@"hh\:mm\:ss");
-            string millisecondsAsText = elapsedTime.ToString(@"\.fff");
-            string formattedTimeAsText = @"{\rtf1\ansi{" + timeAsText + @"\super" + millisecondsAsText + @"\nosupersub}}";
-            return formattedTimeAsText;
+            if (millisecondsVisible)
+            {
+                string millisecondsAsText = elapsedTime.ToString(@"\.fff");
+                timeAsText = @"{\rtf1\ansi{" + timeAsText + @"\super" + millisecondsAsText + @"\nosupersub}}";
+            } else
+            {
+                timeAsText = @"{\rtf1\ansi{" + timeAsText + "}";
+            }
+
+            return timeAsText;
         }
 
         public event EventHandler<ViewEvent> EventHandler = delegate { };
@@ -134,6 +157,12 @@ namespace Stopwatch.View
         private void DisableResizing()
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
+        }
+
+        public void ToggleMilliseconds(object sender, EventArgs e)
+        {
+            millisecondsVisible = !millisecondsVisible;
+            UpdateElapsedTimeText();
         }
 
         public void WinFormsView_FormClosing(object sender, FormClosingEventArgs e)

@@ -40,14 +40,17 @@ namespace Stopwatch.View
             this.MessageBorder = new System.Windows.Forms.GroupBox();
             this.ElapsedTimeLabel = new System.Windows.Forms.RichTextBox();
             this.ElapsedTimeGroupbox = new System.Windows.Forms.GroupBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RunStateGroupBox.SuspendLayout();
-            this.MessageBorder.SuspendLayout();
             this.ElapsedTimeGroupbox.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartStopButton
             // 
-            this.StartStopButton.Location = new System.Drawing.Point(70, 77);
+            this.StartStopButton.Location = new System.Drawing.Point(70, 105);
             this.StartStopButton.Name = "StartStopButton";
             this.StartStopButton.Size = new System.Drawing.Size(82, 36);
             this.StartStopButton.TabIndex = 0;
@@ -57,7 +60,7 @@ namespace Stopwatch.View
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(200, 77);
+            this.ResetButton.Location = new System.Drawing.Point(200, 105);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(89, 36);
             this.ResetButton.TabIndex = 1;
@@ -88,7 +91,7 @@ namespace Stopwatch.View
             // 
             this.RunStateGroupBox.Controls.Add(this.StoppedRadioButton);
             this.RunStateGroupBox.Controls.Add(this.RunningRadioButton);
-            this.RunStateGroupBox.Location = new System.Drawing.Point(12, 19);
+            this.RunStateGroupBox.Location = new System.Drawing.Point(12, 42);
             this.RunStateGroupBox.Name = "RunStateGroupBox";
             this.RunStateGroupBox.Size = new System.Drawing.Size(24, 46);
             this.RunStateGroupBox.TabIndex = 4;
@@ -96,7 +99,7 @@ namespace Stopwatch.View
             // 
             // MessageLabel
             // 
-            this.MessageLabel.Location = new System.Drawing.Point(10, 11);
+            this.MessageLabel.Location = new System.Drawing.Point(14, 165);
             this.MessageLabel.Name = "MessageLabel";
             this.MessageLabel.Size = new System.Drawing.Size(295, 19);
             this.MessageLabel.TabIndex = 6;
@@ -104,9 +107,8 @@ namespace Stopwatch.View
             // 
             // MessageBorder
             // 
-            this.MessageBorder.Controls.Add(this.MessageLabel);
             this.MessageBorder.ForeColor = System.Drawing.Color.Black;
-            this.MessageBorder.Location = new System.Drawing.Point(4, 120);
+            this.MessageBorder.Location = new System.Drawing.Point(4, 152);
             this.MessageBorder.Name = "MessageBorder";
             this.MessageBorder.Size = new System.Drawing.Size(312, 32);
             this.MessageBorder.TabIndex = 7;
@@ -114,35 +116,63 @@ namespace Stopwatch.View
             // 
             // ElapsedTimeLabel
             // 
+            this.ElapsedTimeLabel.DetectUrls = false;
             this.ElapsedTimeLabel.Font = new System.Drawing.Font("Century", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ElapsedTimeLabel.Location = new System.Drawing.Point(7, 8);
+            this.ElapsedTimeLabel.Location = new System.Drawing.Point(7, 10);
+            this.ElapsedTimeLabel.Multiline = false;
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
             this.ElapsedTimeLabel.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.ElapsedTimeLabel.Size = new System.Drawing.Size(256, 46);
             this.ElapsedTimeLabel.TabIndex = 0;
-            this.ElapsedTimeLabel.SelectionAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            this.ElapsedTimeLabel.Rtf = @"{\rtf1\ansi{00:00:00\super.000\nosupersub}}";
-
+            this.UpdateElapsedTimeText();
             // 
             // ElapsedTimeGroupbox
             // 
             this.ElapsedTimeGroupbox.Controls.Add(this.ElapsedTimeLabel);
             this.ElapsedTimeGroupbox.ForeColor = System.Drawing.Color.Black;
-            this.ElapsedTimeGroupbox.Location = new System.Drawing.Point(46, 12);
+            this.ElapsedTimeGroupbox.Location = new System.Drawing.Point(46, 37);
             this.ElapsedTimeGroupbox.Name = "ElapsedTimeGroupbox";
             this.ElapsedTimeGroupbox.Size = new System.Drawing.Size(270, 59);
             this.ElapsedTimeGroupbox.TabIndex = 5;
             this.ElapsedTimeGroupbox.TabStop = false;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(327, 24);
+            this.menuStrip1.TabIndex = 8;
+            this.menuStrip1.Text = "Menu";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toggleMillisecondsToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 20);
+            this.toolStripMenuItem1.Text = "Menu";
+            // 
+            // toggleMillisecondsToolStripMenuItem
+            // 
+            this.toggleMillisecondsToolStripMenuItem.Name = "toggleMillisecondsToolStripMenuItem";
+            this.toggleMillisecondsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toggleMillisecondsToolStripMenuItem.Text = "Toggle Milliseconds";
+            this.toggleMillisecondsToolStripMenuItem.Click += new System.EventHandler(this.ToggleMilliseconds);
+            // 
             // WInFormsView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(327, 153);
+            this.ClientSize = new System.Drawing.Size(327, 189);
+            this.Controls.Add(this.MessageLabel);
             this.Controls.Add(this.MessageBorder);
             this.Controls.Add(this.ElapsedTimeGroupbox);
             this.Controls.Add(this.RunStateGroupBox);
             this.Controls.Add(this.ResetButton);
             this.Controls.Add(this.StartStopButton);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "WInFormsView";
@@ -152,9 +182,11 @@ namespace Stopwatch.View
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WinFormsView_FormClosing);
             this.RunStateGroupBox.ResumeLayout(false);
             this.RunStateGroupBox.PerformLayout();
-            this.MessageBorder.ResumeLayout(false);
             this.ElapsedTimeGroupbox.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -169,6 +201,9 @@ namespace Stopwatch.View
         private System.Windows.Forms.GroupBox MessageBorder;
         private System.Windows.Forms.RichTextBox ElapsedTimeLabel;
         private System.Windows.Forms.GroupBox ElapsedTimeGroupbox;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        public System.Windows.Forms.ToolStripMenuItem toggleMillisecondsToolStripMenuItem;
     }
 }
 
