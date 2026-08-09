@@ -26,9 +26,9 @@ namespace Stopwatch.View
     public partial class WInFormsView : Form, IView
     {
         private readonly SoundPlayer clickSound = new();
-        private byte[] clickSoundBytes;
+        private byte[] clickSoundBytes = Array.Empty<byte>();
 
-        private Boolean millisecondsVisible = true;
+        private bool millisecondsVisible = true;
 
         public WInFormsView()
         {
@@ -45,12 +45,15 @@ namespace Stopwatch.View
         private void cacheClickSound()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream("Stopwatch.Resources.stopwatch.wav"))
-            using (BinaryReader br = new BinaryReader(stream))
+            using Stream? stream = assembly.GetManifestResourceStream("Stopwatch.Resources.stopwatch.wav");
+            if (stream is null)
             {
-                clickSoundBytes = br.ReadBytes((int)stream.Length);
+                return;
             }
-        }   
+
+            using BinaryReader br = new(stream);
+            clickSoundBytes = br.ReadBytes((int)stream.Length);
+        }
 
         private void PlayClickSound()
         {
@@ -62,15 +65,15 @@ namespace Stopwatch.View
         }
 
         public string Message { 
-            get { return this.MessageLabel.Text; }
-            set { this.MessageLabel.Text = value; }
+            get { return MessageLabel.Text; }
+            set { MessageLabel.Text = value; }
         }
 
         private TimeSpan elapsedTime;
         public TimeSpan ElapsedTime { 
             get { return elapsedTime;  }
             set { 
-                this.elapsedTime = value;
+                elapsedTime = value;
                 UpdateElapsedTimeText();
             }
         }
@@ -89,10 +92,11 @@ namespace Stopwatch.View
                     ElapsedTimeLabel.SelectionAlignment = HorizontalAlignment.Center;
                     ElapsedTimeLabel.Refresh();
                 }
-            } catch (Exception e)
+            }
+            catch (Exception)
             {
                 // Don't care to refresh if form is dieing.
-            } 
+            }
         }
 
         private string formatElapsedTime()
@@ -120,7 +124,7 @@ namespace Stopwatch.View
         public void ResetButtonPressed(object sender, EventArgs e)
         {
             PlayClickSound();
-            this.RaiseEvent(ViewEvent.Reset);
+            RaiseEvent(ViewEvent.Reset);
             RenderStoppedState();
         }
 
@@ -130,12 +134,12 @@ namespace Stopwatch.View
             string currentText = StartStopButton.Text;
             if (currentText.Contains("Start"))
             {
-                this.RaiseEvent(ViewEvent.Start);
+                RaiseEvent(ViewEvent.Start);
                 RenderRunningState();
             }
             else
             {
-                this.RaiseEvent(ViewEvent.Stop);
+                RaiseEvent(ViewEvent.Stop);
                 RenderStoppedState();
             }
         }
@@ -173,10 +177,10 @@ namespace Stopwatch.View
 
     public class NullView : IView
     {
-        public string Message { get; set; }
-        public TimeSpan ElapsedTime { get => TimeSpan.Zero; set; }
+        public string Message { get; set; } = string.Empty;
+        public TimeSpan ElapsedTime { get; set; } = TimeSpan.Zero;
 
-        public event EventHandler<ViewEvent> EventHandler;
+        public event EventHandler<ViewEvent>? EventHandler;
 
         public void RaiseEvent(ViewEvent stopwatchEvent)
         {

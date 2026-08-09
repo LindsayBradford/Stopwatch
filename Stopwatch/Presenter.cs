@@ -19,14 +19,14 @@ namespace Stopwatch.Presenter
 
         public IPresenter ForModel(IModel model)
         {
-            model.EventHandler += this.HandleModelEvent;
+            model.EventHandler += HandleModelEvent;
             this.model = model;
             return this;
         }
 
         public IPresenter ForView(IView view)
         {
-            view.EventHandler += this.HandleViewEvent;
+            view.EventHandler += HandleViewEvent;
             this.view = view;
             return this;
         }
@@ -34,7 +34,7 @@ namespace Stopwatch.Presenter
         private IModel model = new NullModel(); 
         private IView view = new NullView();
 
-       public void HandleViewEvent(Object source,  ViewEvent viewEvent)
+       public void HandleViewEvent(Object? source,  ViewEvent viewEvent)
         {
             switch (viewEvent)
             {
@@ -59,7 +59,7 @@ namespace Stopwatch.Presenter
             }
         }
 
-        public void HandleModelEvent(object source, ModelEvent modelEvent)
+        public void HandleModelEvent(object? source, ModelEvent modelEvent)
         {
             switch (modelEvent)
             {

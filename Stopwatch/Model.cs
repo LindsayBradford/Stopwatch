@@ -22,13 +22,13 @@ namespace Stopwatch.Model
         Dieing
     }
 
-    public interface TickRecipient
+    public interface ITickRecipient
     {
         bool ReceivingTicks { get; set; }
         void Tick();
     }
 
-    public interface IModel: TickRecipient
+    public interface IModel: ITickRecipient
     {
         void Start();
         void Stop();
@@ -43,9 +43,9 @@ namespace Stopwatch.Model
     {
         public TimeSpan ElapsedTime => TimeSpan.Zero;
 
-        public bool ReceivingTicks { get => false; set; }
+        public bool ReceivingTicks { get; set; } = false;
 
-        public event EventHandler<ModelEvent> EventHandler;
+        public event EventHandler<ModelEvent>? EventHandler;
 
         public void Die() {}
 
@@ -63,8 +63,8 @@ namespace Stopwatch.Model
 
         public ElapsedTime()
         {
-            this.Start = DateTime.Now;
-            this.End = this.Start;
+            Start = DateTime.Now;
+            End = Start;
         }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
@@ -73,7 +73,7 @@ namespace Stopwatch.Model
 
     }
 
-    public class DefaultModel : IModel, TickRecipient
+    public class DefaultModel : IModel, ITickRecipient
     {
         public event EventHandler<ModelEvent> EventHandler = delegate { };
 
@@ -83,36 +83,36 @@ namespace Stopwatch.Model
 
         public TimeSpan ElapsedTime { get; set; }
         public void Timer() {
-            this.Reset();
+            Reset();
         }
         public void Reset()
         {
-            this.ReceivingTicks = false;
+            ReceivingTicks = false;
             _elapsed = new ElapsedTime();
-            this.ElapsedTime = TimeSpan.Zero;
+            ElapsedTime = TimeSpan.Zero;
             RaiseEvent(ModelEvent.ElapsedTimeChanged);
         }
 
         public void Start()
         {
             _elapsed.Start = DateTime.Now;
-            this.ReceivingTicks = true;
+            ReceivingTicks = true;
         }
 
         public void Stop()
         {
-            this.ReceivingTicks = false;
+            ReceivingTicks = false;
             _elapsed.End = DateTime.Now;
-            this.ElapsedTime += _elapsed.Elapsed;
+            ElapsedTime += _elapsed.Elapsed;
             _elapsed.Start = _elapsed.End;
 
             RaiseEvent(ModelEvent.ElapsedTimeChanged);
         }
         public void Tick()
         {
-            if (this.ReceivingTicks) {
+            if (ReceivingTicks) {
                 _elapsed.End = DateTime.Now;
-                this.ElapsedTime += _elapsed.Elapsed;
+                ElapsedTime += _elapsed.Elapsed;
                 _elapsed.Start = _elapsed.End;
 
                 RaiseEvent(ModelEvent.ElapsedTimeChanged);
@@ -131,9 +131,9 @@ namespace Stopwatch.Model
 
     public abstract class AbstractTicker
     {
-        protected readonly TickRecipient recipient;
+        protected readonly ITickRecipient recipient;
 
-        public AbstractTicker(TickRecipient recipient) {
+        public AbstractTicker(ITickRecipient recipient) {
             this.recipient = recipient;
         }
 
@@ -148,17 +148,17 @@ namespace Stopwatch.Model
     {
         public const UInt16 DEFAULT_TICK_FREQUENCY = 16;  // Approximately 60hz refresh rate.
 
-        private UInt16 tickFrequency;  // milliseconds
-        private Thread tickingThread;
+        private readonly UInt16 tickFrequency;  // milliseconds
+        private Thread? tickingThread;
         private bool _running = false;
 
-        public ThreadTicker(TickRecipient recipient) :base(recipient)
+        public ThreadTicker(ITickRecipient recipient) :base(recipient)
         {
-            this.tickFrequency = DEFAULT_TICK_FREQUENCY;
+            tickFrequency = DEFAULT_TICK_FREQUENCY;
             BootstrapTickingThread();
         }
 
-        public ThreadTicker(TickRecipient recipient, UInt16 tickFrequency = DEFAULT_TICK_FREQUENCY) : base(recipient)
+        public ThreadTicker(ITickRecipient recipient, UInt16 tickFrequency = DEFAULT_TICK_FREQUENCY) : base(recipient)
         {
             if (tickFrequency != DEFAULT_TICK_FREQUENCY) 
                 this.tickFrequency = tickFrequency;
@@ -183,7 +183,7 @@ namespace Stopwatch.Model
             }
         }
 
-        public void HandleModelEvent(object source, ModelEvent modelEvent)
+        public void HandleModelEvent(object? source, ModelEvent modelEvent)
         {
             switch (modelEvent)
             {

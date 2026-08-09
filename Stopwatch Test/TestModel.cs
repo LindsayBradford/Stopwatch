@@ -43,7 +43,7 @@ namespace Stopwatch.Model.Test
 
     public class TestThreadTicker
     {
-        private class TickerSpy : TickRecipient
+        private class TickerSpy : ITickRecipient
         {
             public UInt64 TickCount { get; set; }
 
@@ -51,7 +51,7 @@ namespace Stopwatch.Model.Test
 
             public void Tick()
             {
-                this.TickCount +=1;
+                TickCount +=1;
             }
         }
 
@@ -101,11 +101,11 @@ namespace Stopwatch.Model.Test
 
     class MockTicker : AbstractTicker
     {
-        public MockTicker(TickRecipient recipient) : base(recipient) { }
+        public MockTicker(ITickRecipient recipient) : base(recipient) { }
 
         public void ForceTick()
         {
-            this.tickIfNeeded();
+            tickIfNeeded();
         }
     }
 
